@@ -1,0 +1,19 @@
+{
+  "name": "mun",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "leancloud-storage": "^3.0.4",
+    "office-ui-fabric-react": "^4.30.0",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
+    "react-keeper": "^2.0.7",
+    "react-scripts": "1.0.10"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}
