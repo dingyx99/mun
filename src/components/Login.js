@@ -1,18 +1,13 @@
 import React, { Component } from 'react';
 import { TextField } from 'office-ui-fabric-react/lib/TextField';
-import { DefaultButton, PrimaryButton, IButtonProps } from 'office-ui-fabric-react/lib/Button';
+import { DefaultButton, PrimaryButton } from 'office-ui-fabric-react/lib/Button';
 import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
 import {
-  Checkbox,
-  ICheckboxStyles
+  Checkbox
 } from 'office-ui-fabric-react/lib/Checkbox';
 
 class Login extends Component {
-  constructor(){
-    super()
-  }
   render() {
-    const emailRegax = /^([\w-_]+(?:\.[\w-_]+)*)@((?:[a-z0-9]+(?:-[a-zA-Z0-9]+)*)+\.[a-z]{2,6})$/i;
     return (
       <div style={{
         marginLeft: "auto",

@@ -80,13 +80,11 @@ class App extends Component {
       user.signUp().then(user => {
         self.fromAVtoState(user)
       }).catch(err => {
-        throw {
-          msg: "服务器响应错误"
-        }
+        throw new Error("服务器响应错误")
       })
     } catch(err) {
       this.setState({
-        signUpError: err.msg
+        signUpError: err.message
       })
     }
   }

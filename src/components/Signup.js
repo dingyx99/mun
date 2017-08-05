@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { TextField } from 'office-ui-fabric-react/lib/TextField';
-import { DefaultButton, PrimaryButton, IButtonProps } from 'office-ui-fabric-react/lib/Button';
-import { DatePicker, DayOfWeek, IDatePickerStrings } from 'office-ui-fabric-react/lib/DatePicker';
-import { Dropdown, DropdownMenuItemType } from 'office-ui-fabric-react/lib/Dropdown';
+import { DefaultButton } from 'office-ui-fabric-react/lib/Button';
+import { DatePicker } from 'office-ui-fabric-react/lib/DatePicker';
+import { Dropdown } from 'office-ui-fabric-react/lib/Dropdown';
 import Config from '../config.json'
 
 class Signup extends Component {
