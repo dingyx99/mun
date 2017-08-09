@@ -3,8 +3,10 @@ import AV from 'leancloud-storage';
 import {HashRouter, Route} from 'react-keeper';
 import Login from './components/Login'
 import Signup from './components/Signup'
+import Administrator from './components/Administrator'
 import User from './components/User'
 import './App.css';
+import Config from './config.json'
 
 class App extends Component {
   constructor() {
@@ -50,7 +52,10 @@ class App extends Component {
     const self = this;
     AV.User.logIn(username, password).then((loginedUser) => {
       self.fromAVtoState(loginedUser)
-      document.location.hash = "/user"
+      if(Config.admins.indexOf(loginedUser.getEmail())!=-1)
+        document.location.hash = '/admin'
+      else 
+        document.location.hash = '/user'
     },function (error) {
       // TODO: Translate Error
       self.setState({
@@ -78,7 +83,7 @@ class App extends Component {
       user.set("eatingHabit", this.state.user.eatingHabit)
       const self = this
       user.signUp().then(user => {
-        self.fromAVtoState(user)
+        AV.User.logOut().then(_ => window.location.reload())
       }).catch(err => {
         throw new Error("服务器响应错误")
       })
@@ -103,9 +108,24 @@ class App extends Component {
     })
   }
   componentWillMount(){
+    const self = this;
     if(AV.User.current()) {
-      this.fromAVtoState(AV.User.current())
-      document.location.hash = '/user'
+      AV.User.current().isAuthenticated().then(authed => {
+        if(!authed) {
+          AV.User.logOut().then(_ => {
+            window.location.hash = '/'
+            this.setState({
+              login: false
+            })
+          })
+        } else {
+          self.fromAVtoState(AV.User.current())
+          if(Config.admins.indexOf(AV.User.current().getEmail())!=-1)
+            document.location.hash = '/admin'
+          else 
+            document.location.hash = '/user'
+        }
+      })
     }
   }
   save(){
@@ -113,7 +133,6 @@ class App extends Component {
     if(this.state.user.password) {
       user.setPassword(this.state.user.password)
     }
-    user.setUsername(this.state.user.email)
     user.setMobilePhoneNumber(this.state.user.myTel)
     user.setEmail(this.state.user.email)
     user.set("name", this.state.user.name)
@@ -126,16 +145,16 @@ class App extends Component {
       this.setState({
         updateWell: "成功保存"
       })
+      this.componentWillMount()
     }).catch( err => {
       this.setState({
         updateError: err.message
       })
-    }
-    )
+    })
   }
   render() {
-    window.onresize = () => {
-      this.forceUpdate()
+    if (this.state.login) {
+      window.location.hash = '/user'
     }
     return (
       <HashRouter className="App">
@@ -143,6 +162,7 @@ class App extends Component {
           <Route index error={this.state.loginError} login={this.login.bind(this)} inputUserAttr={this.inputUserAttr.bind(this)} component={ Login } path="/login"></Route>
           <Route save={this.save.bind(this)} well={this.state.updateWell} error={this.state.updateError} inputUserAttr={this.inputUserAttr.bind(this)} component={User} path="/user" user={this.state.user}></Route>
           <Route signUp={this.signUp.bind(this)} error={this.state.signUpError} inputUserAttr={this.inputUserAttr.bind(this)} component={Signup} path='/signup'></Route>
+          <Route component={Administrator} path="admin" />
         </div>
       </HashRouter>
     );

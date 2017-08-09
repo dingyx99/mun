@@ -5,7 +5,7 @@ import { DefaultButton, PrimaryButton } from 'office-ui-fabric-react/lib/Button'
 import { DatePicker } from 'office-ui-fabric-react/lib/DatePicker';
 import { Dropdown } from 'office-ui-fabric-react/lib/Dropdown';
 import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
-import Config from '../config.json'
+import Config from "../config.json"
 
 class Signup extends Component {
   render(){
@@ -13,6 +13,10 @@ class Signup extends Component {
       mail: /^([\w-_]+(?:\.[\w-_]+)*)@((?:[a-z0-9]+(?:-[a-zA-Z0-9]+)*)+\.[a-z]{2,6})$/i,
       phone: /^1[0-9]{10}$/,
       idNum: /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/
+    }
+
+    if(this.props.user.name === '') {
+      window.location.hash = '/'
     }
     return (
       <div style={{
@@ -54,7 +58,7 @@ class Signup extends Component {
           <TextField value={this.props.user.idNum} validateOnFocusOut={true} onGetErrorMessage={content => (content.length === 0 || patterns.idNum.test(content))?"":"请检查身份证号格式"} label="身份证号" onChanged={ content => this.props.inputUserAttr("idNum", content) }></TextField>
           <TextField value={this.props.user.eatingHabit} validateOnFocusOut={true} multiline label="饮食习惯" onChanged={ content => this.props.inputUserAttr("eatingHabit", content) }></TextField>
           {
-            this.props.well?<MessageBar id="ErrorBar" messageBarType={ MessageBarType.success } isMultiline={ false } >{this.props.well}</MessageBar>:null
+            this.props.well?<MessageBar messageBarType={ MessageBarType.success } isMultiline={ false } >{this.props.well}</MessageBar>:null
           }
           <input id="FilePicker" style={{display:"none"}} type="file"/>
           <DefaultButton
@@ -73,12 +77,23 @@ class Signup extends Component {
                   user.set('file', file.url())
                   user.save().then( user => {
                     alert("上传成功")
-                  })
+                  }).catch(_ => alert("上传失败"))
                 }).catch(err => {
                   alert("上传失败")
                 })
               }
               FilePicker.click()
+            }}
+          />
+          <PrimaryButton
+            text='退出登录'
+            style={{
+              marginTop: 20,
+              width: "100%",
+              background: "#e74c3c"
+            }}
+            onClick={ _ => {
+              AV.User.logOut().then(_ => window.location.reload())
             }}
           />
           <PrimaryButton

@@ -25,7 +25,7 @@ class Signup extends Component {
           <h1 id="Title">注册</h1>
         </header>
         <div>
-          <TextField validateOnFocusOut={true} onGetErrorMessage={content => (content.length>1 || content.length === 0)?"":"请检查姓名格式"} label="姓名" onChanged={ content => this.props.inputUserAttr("name", content) }></TextField>
+          <TextField validateOnFocusOut={true} onGetErrorMessage={content => ((content.length>1 && content.length<=10)|| content.length === 0)?"":"请检查姓名格式"} label="姓名" onChanged={ content => this.props.inputUserAttr("name", content) }></TextField>
           <TextField validateOnFocusOut={true} onGetErrorMessage={content =>  (patterns.mail.test(content) || content.length===0)?"":"请检查邮箱格式"} label="邮箱" onChanged={ content => this.props.inputUserAttr("email", content) }></TextField>
           <TextField type='password' validateOnFocusOut={true} onGetErrorMessage={content => (content.length>=6 || content.length === 0)?"":"密码至少六位"} label="密码" onChanged={ content => this.props.inputUserAttr("password", content) }></TextField>
           <Dropdown
@@ -45,7 +45,7 @@ class Signup extends Component {
             }
           />
           <TextField validateOnFocusOut={true} onGetErrorMessage={content => (content.length === 0 || patterns.phone.test(content))?"":"请检查手机号格式"} label="手机号" onChanged={ content => this.props.inputUserAttr("myTel", content) }></TextField>
-          <DatePicker onSelectDate={date => this.props.inputUserAttr("birthday", date)} label="出生日期" placeholder='选择您的出生日期' value={new Date("Sat Jun 13 1998 19:26:04 GMT+0800 (CST)")} />
+          <DatePicker onSelectDate={date => this.props.inputUserAttr("birthday", date)} label="出生日期" placeholder='选择您的出生日期' value={new Date("Sat Jan 1 0:0:0 2001 GMT+0800 (CST)")} />
           <TextField validateOnFocusOut={true} onGetErrorMessage={content => (content.length === 0 || patterns.phone.test(content))?"":"请检查手机号格式"} label="紧急电话" onChanged={ content => this.props.inputUserAttr("emerTel", content) }></TextField>
           <TextField validateOnFocusOut={true} onGetErrorMessage={content => (content.length === 0 || patterns.idNum.test(content))?"":"请检查身份证号格式"} label="身份证号" onChanged={ content => this.props.inputUserAttr("idNum", content) }></TextField>
           <TextField validateOnFocusOut={true} multiline label="饮食习惯" onChanged={ content => this.props.inputUserAttr("eatingHabit", content) }></TextField>
